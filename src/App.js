@@ -7,21 +7,37 @@ class App extends React.Component{
         num1:"",
         num2:"",
         result:"",
+        operation: "Addition"
       };
     }
-    add=(event) => {
-      event.preventDefault();
-      console.log("Num1: ", this.state.num1, " - Num2: ", this.state.num2)
-      this.setState({ result: parseInt(this.state.num1) + parseInt(this.state.num2) })
-      console.log(this.state)
-
+    calculate=(event) => {
+      if (this.state.operation == "Addition")
+      {
+        event.preventDefault();
+        this.setState({ result: parseInt(this.state.num1) + parseInt(this.state.num2) })
+      }
+      else if(this.state.operation == "Subtraction")
+      {
+        event.preventDefault();
+        this.setState({ result: parseInt(this.state.num1) - parseInt(this.state.num2) })
+      }
+      else if(this.state.operation == "Multiplication")
+      {
+        event.preventDefault();
+        this.setState({ result: parseInt(this.state.num1) * parseInt(this.state.num2) })
+      }
+      else
+      {
+        event.preventDefault();
+        this.setState({ result: parseInt(this.state.num1) / parseInt(this.state.num2) })
+      }
     }
     
   render()
   {
     return(
       <>
-      <form onSubmit = {this.add}>
+      <form onSubmit = {this.calculate}>
         <h1> Calculator App!</h1>
         Input first number:
         <br/>
@@ -36,11 +52,11 @@ class App extends React.Component{
         <br/>
         Choose Operation:
         <br/>
-        <select value = {this.state.operation}>
-          <option value = {this.state.operation}> + </option>
-          <option value = {this.state.operation}> - </option>
-          <option value = {this.state.operation}> X </option>
-          <option value ={this.state.operation}> / </option>
+        <select value = {this.state.operation} onChange={ (eve) => { this.setState({ operation: eve.target.value }) } }>
+          <option value = "Addition"> + </option>
+          <option value = "Subtraction"> - </option>
+          <option value = "Multiplication"> X </option>
+          <option value ="Division"> / </option>
         </select>
         <br/>
         <br/>
@@ -54,7 +70,7 @@ class App extends React.Component{
                 onChange={ (eve) => { this.setState({ num2: eve.target.value }) } }/>
         <br/>
         <br/>
-        <input type="submit"  value="Calculate" onClick = {() => this.add}/>
+        <input type="submit"  value="Calculate" onClick = {() => this.calculate}/>
         <h1>Result:{this.state.result}</h1>
 
       </form>
