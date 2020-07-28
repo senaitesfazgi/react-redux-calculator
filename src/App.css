@@ -1,0 +1,8 @@
+
+form{
+    background-color: rgb(76, 76, 83);
+    padding: 10px;
+}
+form input{
+    border-radius: 5px;
+}

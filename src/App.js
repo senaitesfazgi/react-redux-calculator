@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css';
 
 class App extends React.Component{
     constructor(props){
@@ -11,6 +12,7 @@ class App extends React.Component{
       };
     }
     calculate=(event) => {
+
       if (this.state.operation == "Addition")
       {
         event.preventDefault();
