@@ -1,5 +1,8 @@
 import React from 'react';
+import {newCalculation, removeCalculation} from '../actions/calculations';
+import {connect} from 'react-redux';
 import './App.css';
+import Calculation from './Calculation';
 
 class App extends React.Component{
     constructor(props){
@@ -8,31 +11,35 @@ class App extends React.Component{
         num1:"",
         num2:"",
         result:"",
-        operation: "Addition"
+        operation: "+"
       };
     }
     calculate=(event) => {
 
-      if (this.state.operation == "Addition")
+      if (this.state.operation == "+")
       {
         event.preventDefault();
         this.setState({ result: parseInt(this.state.num1) + parseInt(this.state.num2) })
       }
-      else if(this.state.operation == "Subtraction")
+      else if(this.state.operation == "-")
       {
         event.preventDefault();
         this.setState({ result: parseInt(this.state.num1) - parseInt(this.state.num2) })
+
       }
-      else if(this.state.operation == "Multiplication")
+      else if(this.state.operation == "*")
       {
         event.preventDefault();
         this.setState({ result: parseInt(this.state.num1) * parseInt(this.state.num2) })
+        
       }
       else
       {
         event.preventDefault();
         this.setState({ result: parseInt(this.state.num1) / parseInt(this.state.num2) })
+
       }
+      this.props.dispatch(newCalculation(`${this.state.num1} ${this.state.operation} ${this.state.num2} = ${this.state.result.toString()}`));
     }
     
   render()
@@ -55,10 +62,10 @@ class App extends React.Component{
         Choose Operation:
         <br/>
         <select value = {this.state.operation} onChange={ (eve) => { this.setState({ operation: eve.target.value }) } }>
-          <option value = "Addition"> + </option>
-          <option value = "Subtraction"> - </option>
-          <option value = "Multiplication"> X </option>
-          <option value ="Division"> / </option>
+          <option value = "+"> + </option>
+          <option value = "-"> - </option>
+          <option value = "*"> X </option>
+          <option value ="-"> / </option>
         </select>
         <br/>
         <br/>
@@ -74,10 +81,19 @@ class App extends React.Component{
         <br/>
         <input type="submit"  value="Calculate" onClick = {() => this.calculate}/>
         <h1>Result:{this.state.result}</h1>
-
       </form>
+      <ul>
+          {this.props.calculations.map(calculation =>(
+            <Calculation
+             key ={calculation.uniqueId}
+             uniqueId = {calculation.uniqueId}
+             text = {calculation.value}/>
+          ))}
+        </ul>
       </>
-    )
+    );
   }
 }
-export default App;
+export default connect(
+  state=> {return{calculations:state}},
+)(App);
